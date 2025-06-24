@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Mes Mesures{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5><i class="fas fa-ruler"></i> Nouvelle Mesure</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('add_measurement') }}">
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="date" name="date" 
+                               value="{{ today }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="weight" class="form-label">Poids (kg)</label>
+                        <input type="number" class="form-control" id="weight" name="weight" 
+                               step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="waist" class="form-label">Tour de ventre (cm)</label>
+                        <input type="number" class="form-control" id="waist" name="waist" 
+                               step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="3" 
+                                  placeholder="Comment tu te sens? + facile / + dur / + fatigué / + en forme"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Enregistrer
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5><i class="fas fa-chart-line"></i> Historique des Mesures</h5>
+            </div>
+            <div class="card-body">
+                {% if measurements %}
+                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Poids</th>
+                                    <th>Tour</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for measurement in measurements|reverse %}
+                                <tr>
+                                    <td>{{ measurement.date }}</td>
+                                    <td>{{ measurement.weight }} kg</td>
+                                    <td>{{ measurement.waist }} cm</td>
+                                    <td class="small">{{ measurement.notes[:20] }}{% if measurement.notes|length > 20 %}...{% endif %}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">Aucune mesure enregistrée. Commencez par prendre vos mesures de référence!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

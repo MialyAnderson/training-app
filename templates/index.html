@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}Entraînement du jour{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <h2>Plan: Ventre plat et abdos visibles et satisfaire mon bébé</h2>
+                <span class="badge bg-light text-primary week-badge">
+                    Semaine {{ current_week }} / 6
+                </span>
+                <p class="mt-2">{{ today }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Footing -->
+    <div class="col-md-6 mb-4">
+        <div class="card exercise-card {% if today_exercises.get('footing') %}exercise-completed{% endif %}">
+            <div class="card-header bg-success text-white">
+                <h5><i class="fas fa-running"></i> Footing (5x/ semaine)</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Programme:</strong> {{ weekly_program.footing }}</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" 
+                           id="footing" 
+                           {% if today_exercises.get('footing') %}checked{% endif %}
+                           onchange="toggleExercise('footing', this)">
+                    <label class="form-check-label" for="footing">
+                        <strong>Séance terminée ✓</strong>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Abdos + Gainage -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h5><i class="fas fa-fire"></i> Abdos + Gainage (4x/semaine)</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="exercise-card card mb-2 {% if today_exercises.get('crunchs') %}exercise-completed{% endif %}">
+                            <div class="card-body p-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" 
+                                           id="crunchs" 
+                                           {% if today_exercises.get('crunchs') %}checked{% endif %}
+                                           onchange="toggleExercise('crunchs', this)">
+                                    <label class="form-check-label" for="crunchs">
+                                        3×25 Crunchs
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="exercise-card card mb-2 {% if today_exercises.get('releves_jambes') %}exercise-completed{% endif %}">
+                            <div class="card-body p-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" 
+                                           id="releves_jambes" 
+                                           {% if today_exercises.get('releves_jambes') %}checked{% endif %}
+                                           onchange="toggleExercise('releves_jambes', this)">
+                                    <label class="form-check-label" for="releves_jambes">
+                                        3×20 Relevés de jambes
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="exercise-card card mb-2 {% if today_exercises.get('planche_face') %}exercise-completed{% endif %}">
+                            <div class="card-body p-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" 
+                                           id="planche_face" 
+                                           {% if today_exercises.get('planche_face') %}checked{% endif %}
+                                           onchange="toggleExercise('planche_face', this)">
+                                    <label class="form-check-label" for="planche_face">
+                                        3×30-40s Planche face
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="exercise-card card mb-2 {% if today_exercises.get('russian_twists') %}exercise-completed{% endif %}">
+                            <div class="card-body p-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" 
+                                           id="russian_twists" 
+                                           {% if today_exercises.get('russian_twists') %}checked{% endif %}
+                                           onchange="toggleExercise('russian_twists', this)">
+                                    <label class="form-check-label" for="russian_twists">
+                                        3×25 Russian twists
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="exercise-card card mb-2 {% if today_exercises.get('planche_cote') %}exercise-completed{% endif %}">
+                            <div class="card-body p-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" 
+                                           id="planche_cote" 
+                                           {% if today_exercises.get('planche_cote') %}checked{% endif %}
+                                           onchange="toggleExercise('planche_cote', this)">
+                                    <label class="form-check-label" for="planche_cote">
+                                        3×30s Planche côté (chaque côté)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info mt-2 p-2">
+                            <small><i class="fas fa-clock"></i> Repos 30s - 1min entre séries</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Conseils du jour -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5><i class="fas fa-lightbulb"></i> À faire</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6><i class="fas fa-utensils"></i> Alimentation</h6>
+                        <ul class="list-unstyled small">
+                            <li>• Riz (1-2 tasses cuites/repas)</li>
+                            <li>• Viandes maigres (poulet, poisson)</li>
+                            <li>• Beaucoup de légumes</li>
+                            <li>• Limite huiles (1 c. soupe max/plat)</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6><i class="fas fa-bed"></i> Repos</h6>
+                        <ul class="list-unstyled small">
+                            <li>• 7h minimum de sommeil</li>
+                            <li>• 1 jour repos ou marche active</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

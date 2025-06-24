@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Mes Progrès{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h2 class="text-primary">{{ completed_sessions }}</h2>
+                <p>Séances terminées</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h2 class="text-success">{{ total_days }}</h2>
+                <p>Jours d'entraînement</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h2 class="text-warning">{% if total_days > 0 %}{{ "%.1f"|format((completed_sessions / total_days * 100)) }}%{% else %}0%{% endif %}</h2>
+                <p>Taux de réussite</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5><i class="fas fa-calendar-alt"></i> Historique des Entraînements</h5>
+            </div>
+            <div class="card-body">
+                {% if daily_exercises %}
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Footing</th>
+                                    <th>Crunchs</th>
+                                    <th>Relevés</th>
+                                    <th>Planche face</th>
+                                    <th>Russian twists</th>
+                                    <th>Planche côté</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for date_key, exercises in daily_exercises.items()|reverse %}
+                                <tr>
+                                    <td>{{ date_key }}</td>
+                                    <td>{% if exercises.get('footing') %}<i class="fas fa-check text-success"></i>{% else %}<i class="fas fa-times text-muted"></i>{% endif %}</td>
+                                    <td>{% if exercises.get('crunchs') %}<i class="fas fa-check text-success"></i>{% else %}<i class="fas fa-times text-muted"></i>{% endif %}</td>
+                                    <td>{% if exercises.get('releves_jambes') %}<i class="fas fa-check text-success"></i>{% else %}<i class="fas fa-times text-muted"></i>{% endif %}</td>
+                                    <td>{% if exercises.get('planche_face') %}<i class="fas fa-check text-success"></i>{% else %}<i class="fas fa-times text-muted"></i>{% endif %}</td>
+                                    <td>{% if exercises.get('russian_twists') %}<i class="fas fa-check text-success"></i>{% else %}<i class="fas fa-times text-muted"></i>{% endif %}</td>
+                                    <td>{% if exercises.get('planche_cote') %}<i class="fas fa-check text-success"></i>{% else %}<i class="fas fa-times text-muted"></i>{% endif %}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">Aucun entraînement enregistré. Commencez dès aujourd'hui!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="alert alert-success">
+            <h5><i class="fas fa-trophy"></i> Résultats Attendus</h5>
+            <ul class="mb-0">
+                <li>Ventre plus plat</li>
+                <li>Abdos fermes et qui commencent à apparaître si perte de gras suffisante</li>
+                <li>Meilleure forme générale</li>
+            </ul>
+            <hr>
+            <p class="mb-0"><strong>Tiens bon mon bébé tu verras un vrai changement d'ici le 9 août!</strong></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Mon Entraînement{% endblock %}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .exercise-card {
+            transition: all 0.3s ease;
+        }
+        .exercise-completed {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .progress-ring {
+            width: 60px;
+            height: 60px;
+        }
+        .week-badge {
+            font-size: 1.2em;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="fas fa-dumbbell"></i> Mon Entraînement
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('index') }}">Aujourd'hui</a>
+                <a class="nav-link" href="{{ url_for('measurements') }}">Mesures</a>
+                <a class="nav-link" href="{{ url_for('progress') }}">Progrès</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleExercise(exercise, checkbox) {
+            const card = checkbox.closest('.exercise-card');
+            const completed = checkbox.checked;
+            
+            fetch('/complete_exercise', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `exercise=${exercise}&completed=${completed}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (completed) {
+                        card.classList.add('exercise-completed');
+                    } else {
+                        card.classList.remove('exercise-completed');
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
